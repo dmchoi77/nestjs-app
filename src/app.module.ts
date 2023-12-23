@@ -1,20 +1,17 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
-import { EmailModule } from './email/email.module';
 import { ConfigModule } from '@nestjs/config';
-
+import emailConfig from './config/emailConfig';
+import { validationSchema } from './config/validationSchema';
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath:
-        process.env.NODE_ENV === 'production'
-          ? '.production.env'
-          : process.env.NODE_ENV === 'stage'
-            ? '.stage.env'
-            : '.development.env',
-    }),
     UsersModule,
-    EmailModule,
+    ConfigModule.forRoot({
+      envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
+      load: [emailConfig], // ConfigFactory 지정
+      isGlobal: true,
+      validationSchema, // 환경변수 값에 대해 유효성 검사 수행하도록 joi를 이용하여 유효성 검사 객체 작성
+    }),
   ],
   controllers: [],
   providers: [],
