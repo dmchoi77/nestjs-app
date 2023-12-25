@@ -20,7 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: 'test',
-      entities: [__dirname, '/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true', // true로 지정하면 서비스 실행되고 DB 연결 될 때마다 DB 초기화 되므로 운영에서는 false 해야함
     }),
   ],
