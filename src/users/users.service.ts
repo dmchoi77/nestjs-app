@@ -1,10 +1,14 @@
 import * as uuid from 'uuid';
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { EmailService } from 'src/email/email.service';
 import { UserInfo } from './UserInfo';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entity/user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -15,17 +19,17 @@ export class UsersService {
     private emailService: EmailService,
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
+    private dataSource: DataSource,
   ) {}
 
   async createUser(name: string, email: string, password: string) {
     const userExist = await this.checkUserExists(email);
+
     if (userExist) {
       throw new UnprocessableEntityException(
         '해당 이메일로 가입할 수 없습니다.',
       );
     }
-
-    await this.checkUserExists(email);
 
     const signupVerifyToken = uuid.v1();
 
@@ -38,7 +42,7 @@ export class UsersService {
       where: { email: email },
     });
 
-    return user !== undefined;
+    return !!user;
   }
 
   private async saveUser(
@@ -47,13 +51,18 @@ export class UsersService {
     password: string,
     signupVerifyToken: string,
   ) {
-    const user = new UserEntity();
-    user.id = uuid.v4();
-    user.name = name;
-    user.email = email;
-    user.password = password;
-    user.signupVerifyToken = signupVerifyToken;
-    await this.usersRepository.save(user);
+    await this.dataSource.transaction(async (manager) => {
+      const user = new UserEntity();
+      user.id = uuid.v4();
+      user.name = name;
+      user.email = email;
+      user.password = password;
+      user.signupVerifyToken = signupVerifyToken;
+      // await this.usersRepository.save(user);
+      await manager.save(user);
+
+      // throw new InternalServerErrorException();
+    });
   }
 
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
