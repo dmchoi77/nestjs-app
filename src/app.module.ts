@@ -4,12 +4,15 @@ import { ConfigModule } from '@nestjs/config';
 import emailConfig from './config/emailConfig';
 import { validationSchema } from './config/validationSchema';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
+import authConfig from './config/authConfig';
 @Module({
   imports: [
     UsersModule,
     ConfigModule.forRoot({
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
-      load: [emailConfig], // ConfigFactory 지정
+      load: [emailConfig, authConfig], // ConfigFactory 지정
       isGlobal: true,
       validationSchema, // 환경변수 값에 대해 유효성 검사 수행하도록 joi를 이용하여 유효성 검사 객체 작성
     }),
@@ -23,8 +26,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true', // true로 지정하면 서비스 실행되고 DB 연결 될 때마다 DB 초기화 되므로 운영에서는 false 해야함
     }),
+    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [AuthService],
 })
 export class AppModule {}
