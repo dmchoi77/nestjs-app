@@ -6,6 +6,7 @@ import { validationSchema } from './config/validationSchema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { MemosModule } from './memos/memos.module';
 import authConfig from './config/authConfig';
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import authConfig from './config/authConfig';
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true', // true로 지정하면 서비스 실행되고 DB 연결 될 때마다 DB 초기화 되므로 운영에서는 false 해야함
     }),
     AuthModule,
+    MemosModule,
   ],
   controllers: [],
   providers: [AuthService],
