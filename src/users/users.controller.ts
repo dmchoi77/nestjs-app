@@ -20,7 +20,7 @@ export class UsersController {
   // UsersService를 컨트롤러에 주입
   constructor(
     private usersService: UsersService,
-    private authService: AuthService,
+    // private authService: AuthService,
   ) {}
 
   @Post()
