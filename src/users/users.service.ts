@@ -92,16 +92,30 @@ export class UsersService {
   }
 
   async login(email: string, password: string): Promise<string> {
-    // TODO
-    // 1. email, password 가진 유저가 존재하는지 DB에서 확인하고 없으면 에러 처리
-    // 2. JWT 발급
-    throw new Error('Method not implemented.');
+    const user = await this.usersRepository.findOne({
+      where: { email, password },
+    });
+
+    if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
+
+    return this.authService.login({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
   }
 
   async getUserInfo(userId: string): Promise<UserInfo> {
-    // TODO
-    // 1. userId를 가진 유저가 존재하는지 DB에서 확인하고 없으면 에러 처리
-    // 2. 조회된 데이터를 UserInfo 타입으로 응답
-    throw new Error('Method not implemented.');
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
   }
 }
