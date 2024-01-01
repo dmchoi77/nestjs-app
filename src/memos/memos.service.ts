@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthenticatedRequest } from 'src/types/auth.types';
-import { User } from 'src/utils/decorators/user';
 import { Repository } from 'typeorm';
 import { CreateMemoDto } from './dto/create-memo.dto';
 import { MemoEntity } from './entities/memo.entity';

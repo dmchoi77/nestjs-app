@@ -3,7 +3,6 @@ import { MemosService } from './memos.service';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateMemoDto } from './dto/create-memo.dto';
 import { User } from 'src/utils/decorators/user';
-import { AuthGuard } from 'src/auth.guard';
 
 @Controller('memos')
 export class MemosController {
@@ -12,7 +11,6 @@ export class MemosController {
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(AuthGuard)
   @Get('/:date')
   async fetchMemoList(@User() user: string, @Param('date') date: Date) {
     const memoList = await this.memosService.fetchMemoList(user, date);
@@ -24,7 +22,6 @@ export class MemosController {
     };
   }
 
-  @UseGuards(AuthGuard)
   @Post()
   async createMemo(@User() user: string, @Body() dto: CreateMemoDto) {
     await this.memosService.createMemo(user, dto);
