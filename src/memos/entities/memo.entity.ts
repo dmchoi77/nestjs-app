@@ -2,13 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('Memo')
 export class MemoEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @CreateDateColumn()
@@ -20,10 +20,10 @@ export class MemoEntity {
   @Column({ nullable: false })
   content: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'int', default: () => 0, nullable: false })
   displayOrder: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, default: 0 })
   importance: number;
 
   @Column({ nullable: false })

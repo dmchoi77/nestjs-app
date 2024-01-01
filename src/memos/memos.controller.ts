@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { MemosService } from './memos.service';
 import { AuthService } from 'src/auth/auth.service';
 import { Request } from 'express';
+import { CreateMemoDto } from './dto/create-memo.dto';
 
 @Controller('memos')
 export class MemosController {
@@ -18,6 +19,16 @@ export class MemosController {
       message: '조회 완료',
       statusCode: 200,
       data: memoList,
+    };
+  }
+
+  @Post()
+  async createMemo(@Req() req: Request, @Body() dto: CreateMemoDto) {
+    await this.memosService.createMemo(req, dto);
+
+    return {
+      message: '메모 생성 완료',
+      statusCode: 200,
     };
   }
 }

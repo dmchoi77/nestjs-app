@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { MemosService } from './memos.service';
 import { MemosController } from './memos.controller';
 import { AuthModule } from 'src/auth/auth.module';
@@ -13,6 +18,6 @@ import { MemoEntity } from './entities/memo.entity';
 })
 export class MemosModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('/memos/*');
+    consumer.apply(AuthMiddleware).forRoutes('/memos');
   }
 }
