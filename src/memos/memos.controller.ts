@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { MemosService } from './memos.service';
 import { AuthService } from 'src/auth/auth.service';
-import { Request } from 'express';
 import { CreateMemoDto } from './dto/create-memo.dto';
+import { User } from 'src/utils/decorators/user';
+import { AuthGuard } from 'src/auth.guard';
 
 @Controller('memos')
 export class MemosController {
@@ -11,9 +12,10 @@ export class MemosController {
     private readonly authService: AuthService,
   ) {}
 
+  @UseGuards(AuthGuard)
   @Get('/:date')
-  async fetchMemoList(@Req() req: Request, @Param('date') date: Date) {
-    const memoList = await this.memosService.fetchMemoList(req, date);
+  async fetchMemoList(@User() user: string, @Param('date') date: Date) {
+    const memoList = await this.memosService.fetchMemoList(user, date);
 
     return {
       message: '조회 완료',
@@ -22,9 +24,10 @@ export class MemosController {
     };
   }
 
+  @UseGuards(AuthGuard)
   @Post()
-  async createMemo(@Req() req: Request, @Body() dto: CreateMemoDto) {
-    await this.memosService.createMemo(req, dto);
+  async createMemo(@User() user: string, @Body() dto: CreateMemoDto) {
+    await this.memosService.createMemo(user, dto);
 
     return {
       message: '메모 생성 완료',
