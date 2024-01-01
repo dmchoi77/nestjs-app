@@ -3,7 +3,9 @@ import { MemosService } from './memos.service';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateMemoDto } from './dto/create-memo.dto';
 import { User } from 'src/utils/decorators/user';
+import { AuthGuard } from 'src/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('memos')
 export class MemosController {
   constructor(

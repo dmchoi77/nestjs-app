@@ -8,7 +8,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
-import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
@@ -26,7 +25,7 @@ export class UsersController {
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     const { email, name, password } = dto;
-    await this.usersService.createUser(name, email, password);
+    return await this.usersService.createUser(name, email, password);
   }
 
   @Post('/email-verify')
