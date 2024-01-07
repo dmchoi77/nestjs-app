@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { MemosModule } from './memos/memos.module';
 import authConfig from './config/authConfig';
+import { ExceptionModule } from './exception/exception.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import authConfig from './config/authConfig';
     }),
     AuthModule,
     MemosModule,
+    ExceptionModule,
   ],
   controllers: [],
   providers: [AuthService],
