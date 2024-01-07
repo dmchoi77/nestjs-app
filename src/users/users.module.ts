@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { EmailModule } from 'src/email/email.module';
@@ -14,6 +14,6 @@ import { UsersService } from './users.service';
     AuthModule,
   ], // Users Module에서 사용할 저장소 등록
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, Logger],
 })
 export class UsersModule {}

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { MemosModule } from './memos/memos.module';
 import authConfig from './config/authConfig';
+
 @Module({
   imports: [
     UsersModule,
