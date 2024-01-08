@@ -1,11 +1,11 @@
 import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'src/auth/auth.module';
-import { EmailModule } from 'src/email/email.module';
-import { MemoEntity } from 'src/memos/entities/memo.entity';
+import { AuthModule } from '~/src/auth/auth.module';
+import { EmailModule } from '~/src/email/email.module';
 import { UserEntity } from './entity/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { MemoEntity } from '~/src/memos/entities/memo.entity';
 
 @Module({
   imports: [
