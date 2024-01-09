@@ -9,6 +9,7 @@ import { AuthService } from './auth/auth.service';
 import { MemosModule } from './memos/memos.module';
 import authConfig from './config/authConfig';
 import { ExceptionModule } from './exception/exception.module';
+import { SseController } from './sse/sse.controller';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { ExceptionModule } from './exception/exception.module';
     MemosModule,
     ExceptionModule,
   ],
-  controllers: [],
+  controllers: [SseController],
   providers: [AuthService],
 })
 export class AppModule {}
