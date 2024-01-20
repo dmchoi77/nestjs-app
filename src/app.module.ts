@@ -10,6 +10,7 @@ import { MemosModule } from './memos/memos.module';
 import authConfig from './config/authConfig';
 import { ExceptionModule } from './exception/exception.module';
 import { SseController } from './sse/sse.controller';
+import { LoggingModule } from './logging/logging.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { SseController } from './sse/sse.controller';
     AuthModule,
     MemosModule,
     ExceptionModule,
+    LoggingModule,
   ],
   controllers: [SseController],
   providers: [AuthService],
