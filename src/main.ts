@@ -6,10 +6,12 @@ import {
   WinstonModule,
 } from 'nest-winston';
 import { AppModule } from './app.module';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
+
     // logger: process.env.NODE_ENV === 'production'
     //   ? ['error', 'warn', 'log']
     //   : ['error', 'warn', 'log', 'verbose', 'debug']
@@ -28,6 +30,11 @@ async function bootstrap() {
       ],
     }),
   });
+  app.enableCors({
+    origin: ['http://localhost:8100'],
+    credentials: true,
+  });
+  app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
