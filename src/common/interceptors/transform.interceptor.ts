@@ -4,6 +4,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { ServerResponse } from 'http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -19,6 +20,15 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler<T>,
   ): Observable<Response<T>> {
-    return next.handle().pipe(map((data) => ({ data })));
+    // const req = context.switchToHttp().getRequest();
+    const res = context.switchToHttp().getResponse<ServerResponse>();
+
+    return next.handle().pipe(
+      map((data) => ({
+        status: 'OK',
+        data,
+        resultMessage: '성공',
+      })),
+    );
   }
 }

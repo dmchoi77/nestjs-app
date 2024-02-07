@@ -18,8 +18,8 @@ export class AuthService {
   login(user: User) {
     const payload = { ...user };
 
-    return jwt.sign(payload, this.config.jwtSecret, {
-      expiresIn: '1d',
+    return jwt.sign(payload, this.config.jwtAccessTokenSecret, {
+      expiresIn: this.config.jwtAccessTokenExpirationTime,
       audience: 'example.com',
       issuer: 'example.com',
     });
@@ -27,11 +27,10 @@ export class AuthService {
 
   verify(jwtString: string) {
     try {
-      const payload = jwt.verify(jwtString, this.config.jwtSecret) as (
-        | jwt.JwtPayload
-        | string
-      ) &
-        User;
+      const payload = jwt.verify(
+        jwtString,
+        this.config.jwtAccessTokenSecret,
+      ) as (jwt.JwtPayload | string) & User;
 
       const { id, email } = payload;
 

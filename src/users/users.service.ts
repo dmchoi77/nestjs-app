@@ -11,6 +11,10 @@ import { UserInfo } from './UserInfo';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entity/user.entity';
 import { DataSource, Repository } from 'typeorm';
+import {
+  UserExistsException,
+  UserNotFoundException,
+} from '../lib/exceptions/user.exception';
 
 @Injectable()
 export class UsersService {
@@ -29,15 +33,13 @@ export class UsersService {
     const userExist = await this.checkUserExists(email);
 
     if (userExist) {
-      throw new UnprocessableEntityException(
-        '해당 이메일로 가입할 수 없습니다.',
-      );
+      throw new UserExistsException();
     }
 
     const signupVerifyToken = uuid.v1();
 
     await this.saveUser(name, email, password, signupVerifyToken);
-    await this.sendMemberJoinEmail(email, signupVerifyToken);
+    // await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
   private async checkUserExists(email: string): Promise<boolean> {
@@ -96,7 +98,8 @@ export class UsersService {
       where: { email, password },
     });
 
-    if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
+    // if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
+    if (!user) throw new UserNotFoundException();
 
     return this.authService.login({
       id: user.id,
