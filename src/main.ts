@@ -7,6 +7,7 @@ import {
 } from 'nest-winston';
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { AllExceptionFilter } from './lib/filter/exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -35,6 +36,7 @@ async function bootstrap() {
     credentials: true,
   });
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
