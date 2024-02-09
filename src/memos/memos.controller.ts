@@ -15,22 +15,11 @@ export class MemosController {
 
   @Get('/:date')
   async fetchMemoList(@User() user: string, @Param('date') date: Date) {
-    const memoList = await this.memosService.fetchMemoList(user, date);
-
-    return {
-      message: '조회 완료',
-      statusCode: 200,
-      data: memoList,
-    };
+    return this.memosService.fetchMemoList(user, date);
   }
 
   @Post()
   async createMemo(@User() user: string, @Body() dto: CreateMemoDto) {
-    await this.memosService.createMemo(user, dto);
-
-    return {
-      message: '메모 생성 완료',
-      statusCode: 200,
-    };
+    return this.memosService.createMemo(user, dto);
   }
 }

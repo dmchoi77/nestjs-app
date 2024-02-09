@@ -27,7 +27,6 @@ export class TransformInterceptor<T>
       map((data) => ({
         status: 'OK',
         data,
-        resultMessage: '성공',
       })),
     );
   }

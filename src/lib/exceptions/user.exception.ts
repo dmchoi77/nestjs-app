@@ -5,7 +5,7 @@ import { AuthExceptionCodeEnum } from '../enum/exception.enum';
 export class UserNotFoundException extends BaseException {
   constructor() {
     super(
-      '존재하지 않는 아이디입니다.',
+      '이메일과 비밀번호가 일치하지 않습니다.',
       HttpStatus.NOT_FOUND,
       AuthExceptionCodeEnum.UserNotFound,
     );
