@@ -1,13 +1,11 @@
 import { HttpStatus } from '@nestjs/common';
-import { UncatchedExceptionCodeEnum } from '../enum/exception.enum';
 import { BaseException } from './base/base.exception';
 
 export class UnCatchedException extends BaseException {
-  constructor() {
+  constructor(exception: any) {
     super(
-      UncatchedExceptionCodeEnum.UnCatched,
-      'internal server error',
-      HttpStatus.INTERNAL_SERVER_ERROR,
+      exception.response.message[0] ?? 'internal server error',
+      exception.response.statusCode ?? HttpStatus.INTERNAL_SERVER_ERROR,
     );
   }
 }

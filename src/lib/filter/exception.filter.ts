@@ -5,13 +5,14 @@ import { UnCatchedException } from '../exceptions/uncatch.exception';
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): void {
-    console.log('🚀 ~ AllExceptionFilter ~ exception:', exception);
     const ctx = host.switchToHttp();
     // const request = ctx.getRequest();
     const response = ctx.getResponse();
 
     const res =
-      exception instanceof BaseException ? exception : new UnCatchedException();
+      exception instanceof BaseException
+        ? exception
+        : new UnCatchedException(exception);
 
     response.status(res.statusCode).json({
       errorCode: res.errorCode,

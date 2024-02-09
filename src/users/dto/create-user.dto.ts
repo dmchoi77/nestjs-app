@@ -28,6 +28,8 @@ export class CreateUserDto {
   readonly email: string;
 
   @IsString()
-  @Matches(/^[A-Za-z\d!@#$%^&*()]{8,30}$/)
+  @Matches(/^[A-Za-z\d!@#$%^&*()]{8,30}$/, {
+    message: '비밀번호는 8자 이상 30자 이하여야 합니다.',
+  })
   readonly password: string;
 }
