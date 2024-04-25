@@ -14,6 +14,7 @@ import { DataSource, Repository } from 'typeorm';
 import {
   UserExistsException,
   UserNotFoundException,
+  UserPasswordCheckException,
 } from '../lib/exceptions/user.exception';
 
 @Injectable()
@@ -29,12 +30,17 @@ export class UsersService {
     private dataSource: DataSource,
   ) {}
 
-  async createUser(name: string, email: string, password: string) {
+  async createUser(
+    name: string,
+    email: string,
+    password: string,
+    passwordCheck: string,
+  ) {
     const userExist = await this.checkUserExists(email);
 
-    if (userExist) {
-      throw new UserExistsException();
-    }
+    if (userExist) throw new UserExistsException();
+
+    if (password !== passwordCheck) throw new UserPasswordCheckException();
 
     const signupVerifyToken = uuid.v1();
 

@@ -17,13 +17,13 @@ export class CreateUserDto {
   @Transform(({ value, obj }) => {
     if (obj.password.includes(obj.name.trim())) {
       throw new BadRequestException(
-        '패스워드는 name과 같은 문자열을 포함할 수 없습니다.',
+        '패스워드는 이름과 같은 문자열을 포함할 수 없습니다.',
       );
     }
     return value.trim();
   })
   @IsString()
-  @IsEmail()
+  @IsEmail({}, { message: '이메일 형식이 맞지 않습니다.' })
   @MaxLength(60)
   readonly email: string;
 
@@ -32,4 +32,10 @@ export class CreateUserDto {
     message: '비밀번호는 8자 이상 30자 이하여야 합니다.',
   })
   readonly password: string;
+
+  @IsString()
+  // @Matches(/^[A-Za-z\d!@#$%^&*()]{8,30}$/, {
+  //   message: '비밀번호는 8자 이상 30자 이하여야 합니다.',
+  // })
+  readonly passwordCheck: string;
 }

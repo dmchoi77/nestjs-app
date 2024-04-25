@@ -31,8 +31,13 @@ export class UsersController {
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     this.printLoggerServiceLog(dto);
-    const { email, name, password } = dto;
-    return await this.usersService.createUser(name, email, password);
+    const { email, name, password, passwordCheck } = dto;
+    return await this.usersService.createUser(
+      name,
+      email,
+      password,
+      passwordCheck,
+    );
   }
 
   private printLoggerServiceLog(dto) {
@@ -55,10 +60,17 @@ export class UsersController {
   }
 
   @Post('/login')
-  async login(@Body() dto: UserLoginDto): Promise<string> {
+  async login(
+    @Body() dto: UserLoginDto,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = dto;
 
-    return await this.usersService.login(email, password);
+    const accessToken = await this.usersService.login(email, password);
+
+    return {
+      accessToken,
+      refreshToken: '',
+    };
   }
 
   @UseGuards(AuthGuard)

@@ -21,3 +21,13 @@ export class UserExistsException extends BaseException {
     );
   }
 }
+
+export class UserPasswordCheckException extends BaseException {
+  constructor() {
+    super(
+      '비밀번호와 비밀번호 확인이 서로 일치하지 않습니다.',
+      HttpStatus.BAD_REQUEST,
+      AuthExceptionCodeEnum.InvalidPassword,
+    );
+  }
+}
