@@ -16,10 +16,30 @@ export class AuthService {
   ) {}
 
   login(user: User) {
+    const accessToken = this.generateAccessToken(user);
+    const refreshToken = this.generateRefreshToken(user);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  generateAccessToken(user: User) {
     const payload = { ...user };
 
     return jwt.sign(payload, this.config.jwtAccessTokenSecret, {
       expiresIn: this.config.jwtAccessTokenExpirationTime,
+      audience: 'example.com',
+      issuer: 'example.com',
+    });
+  }
+
+  generateRefreshToken(user: User) {
+    const payload = { ...user };
+
+    return jwt.sign(payload, this.config.jwtRefreshTokenSecret, {
+      expiresIn: this.config.jwtRefreshTokenExpirationTime,
       audience: 'example.com',
       issuer: 'example.com',
     });

@@ -53,24 +53,17 @@ export class UsersController {
   }
 
   @Post('/email-verify')
-  async verifyEmail(@Query() dto: VerifyEmailDto): Promise<string> {
+  async verifyEmail(@Query() dto: VerifyEmailDto) {
     const { signupVerifyToken } = dto;
 
     return await this.usersService.verifyEmail(signupVerifyToken);
   }
 
   @Post('/login')
-  async login(
-    @Body() dto: UserLoginDto,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async login(@Body() dto: UserLoginDto) {
     const { email, password } = dto;
 
-    const accessToken = await this.usersService.login(email, password);
-
-    return {
-      accessToken,
-      refreshToken: '',
-    };
+    return this.usersService.login(email, password);
   }
 
   @UseGuards(AuthGuard)

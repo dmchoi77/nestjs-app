@@ -83,7 +83,7 @@ export class UsersService {
     );
   }
 
-  async verifyEmail(signupVerifyToken: string): Promise<string> {
+  async verifyEmail(signupVerifyToken: string) {
     const user = await this.usersRepository.findOne({
       where: { signupVerifyToken },
     });
@@ -99,7 +99,7 @@ export class UsersService {
     });
   }
 
-  async login(email: string, password: string): Promise<string> {
+  async login(email: string, password: string) {
     const user = await this.usersRepository.findOne({
       where: { email, password },
     });
