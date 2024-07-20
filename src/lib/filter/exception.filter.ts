@@ -1,7 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { BaseException } from '../exceptions/base/base.exception';
 import { UnCatchedException } from '../exceptions/uncatch.exception';
-import { UncatchedExceptionCodeEnum } from '../enum/exception.enum';
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
@@ -20,9 +19,9 @@ export class AllExceptionFilter implements ExceptionFilter {
       : res.errorMessage;
 
     response.status(res.statusCode).json({
-      statusCode: res.statusCode,
-      errorCode: res.errorCode || UncatchedExceptionCodeEnum.UnCatched,
+      errorCode: 'BAD_REQUEST',
       errorMessage: errorMessage || 'internal server error',
+      // errorCode: res.errorCode || UncatchedExceptionCodeEnum.UnCatched,
     });
   }
 }
